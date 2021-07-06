@@ -6,18 +6,39 @@ import Filter from '../Filter/Filter';
 
 class App extends React.Component {
     state = {
-        contacts: [],
+        contacts: [
+            {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+            {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+            {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+            {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+        ],
         filter: '',
     }
-
+    onSameName = (name, contacts) => {
+        const hasName = contacts.find(el => el.name === name);
+        return(hasName ? false : true)
+    }
     addContact = data => {
         const contact = {
             id: shortid.generate(),
             name: data.name,
             number: data.number,
         }
+
+        this.setState(prevState => {
+            const isUnique = this.onSameName(contact.name, prevState.contacts);
+            if (isUnique) {
+                return {
+                    contacts: [contact, ...prevState.contacts]
+                };
+            } else {
+                alert('Контакт с таким Именем уже добавлен!')
+            }
+        })
+    }
+    deleteContact = contactId => {
         this.setState(prevState => ({
-            contacts: [contact, ...prevState.contacts]
+            contacts: prevState.contacts.filter(contact => contact.id !== contactId),
         }))
     }
     changeFilter = evt => {
@@ -33,7 +54,6 @@ class App extends React.Component {
 
     render() {
         const { filter} = this.state;
-        
         const filtredNames = this.getFiltredContacts();
         
         return (    
@@ -42,7 +62,7 @@ class App extends React.Component {
                 <ContactForm onSubmit={this.addContact}/>
                 <h2>Contacts</h2>
                 <Filter value={filter} onChange={this.changeFilter} />
-                <ContactList value={filtredNames}/>
+                <ContactList value={filtredNames} onDeleteContact={this.deleteContact}/>
             </>
         )
     }

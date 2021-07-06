@@ -15,18 +15,16 @@ class ContactForm extends React.Component {
             [name]:value,
         })
     }
-   
     handleSubmit = evt => {
         evt.preventDefault();
 
         this.props.onSubmit(this.state);
         this.reset();
     }
-
     reset = () => {
         this.setState({ name: '', number: '' });
     }
-
+    
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
