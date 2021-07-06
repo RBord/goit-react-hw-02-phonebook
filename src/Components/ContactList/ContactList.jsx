@@ -1,4 +1,5 @@
 import React from 'react';
+import s from '../ContactList/ContactList.module.css';
 
 const ContactList = ({value, onDeleteContact}) => {
     console.log(value)
@@ -6,8 +7,8 @@ const ContactList = ({value, onDeleteContact}) => {
         <ul value={value}>
             {value.map(({ id, name, number}) => {
                 return (
-                    <div key={id}>
-                        <li>{name}: {number}</li> <button onClick={()=>onDeleteContact(id)}>Delete</button>
+                    <div key={id} className={s.divItem}>
+                        <li className={s.liItem}>{name}: {number}</li> <button onClick={()=>onDeleteContact(id)} className={s.btn}>Delete</button>
                     </div>
                 )
             })}
